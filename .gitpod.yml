@@ -1,0 +1,20 @@
+ports:
+  # Shopware server
+  - port: 8000
+    onOpen: open-preview
+  # MySQL server
+  - port: 3306
+    onOpen: ignore
+
+tasks:
+  - init: >
+      cd web &&
+      docker-compose up -d
+      mysql -u root -e "create database shopware" &&
+      cp .env.example .env &&
+      sed -i "s|APP_URL=|APP_URL=${GITPOD_WORKSPACE_URL}|g" .env &&
+      sed -i "s|APP_URL=https://|APP_URL=https://8000-|g" .env &&
+      sed -i "s|DATABASE_URL="mysql://root:root@localhost:3306/shopware"
+      composer install &&
+      bin/console system:setup &&
+      bin/console system:install --create-database --basic-setup
