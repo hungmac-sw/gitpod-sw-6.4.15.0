@@ -14,7 +14,6 @@ tasks:
       cp .env.example .env &&
       sed -i "s|APP_URL=|APP_URL=${GITPOD_WORKSPACE_URL}|g" .env &&
       sed -i "s|APP_URL=https://|APP_URL=https://8000-|g" .env &&
-      sed -i "s|DATABASE_URL="mysql://root:root@localhost:3306/shopware"
       composer install &&
       bin/console system:setup &&
       bin/console system:install --create-database --basic-setup
